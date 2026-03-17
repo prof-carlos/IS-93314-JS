@@ -23,3 +23,44 @@ const Cliente = sequelize.define('Cliente', {
         type: DataTypes.STRING
     }
 })
+
+// Configuração do servidor express.
+const app = express()
+app.use(cors()) // Permite o front-end acessar a API.
+app.use(express.json()) // Permite o servidor entender JSON.
+
+const port = 3001
+
+// Definição de rotas (endpoints).
+// req: request
+// res: response
+app.get('/clientes', async (req, res) => {
+    const todosOsClientes = await Cliente.findAll()
+    res.json(todosOsClientes)
+})
+
+app.post('/clientes', async(req, res) => {
+    try {
+        const {nome, email, telefone} = req.body
+        const novoCliente = await Cliente.create({ nome, email, telefone })
+        res.status(201).json({
+            message: 'Cliente cadastrado com sucesso.',
+            cliente: novoCliente
+        })
+    } catch (error) {
+        res.status(400).json({
+            erro: 'Erro ao cadastrar cliente. Verifique se o cliente já existe'
+        })
+    } 
+})
+
+// Iniciando o servidor.
+sequelize.sync().then(() => {
+    app.listen(port, () => {
+        console.log(`🚀 Servidor rodando na porta: ${port}`)
+        console.log('✅ Banco de dados sincronizado.')
+    })
+}).catch((error) => {
+    console.error('❌ Erro ao conectar ou sincronizar com o banco de dados.')
+    console.error(error)
+})
