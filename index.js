@@ -54,6 +54,47 @@ app.post('/clientes', async(req, res) => {
     } 
 })
 
+app.put("/clientes/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const [updated] = await Cliente.update(
+            { ...req.body },
+            { where: { id: id } }
+        )
+
+        if (updated) {
+            const clienteAtualizado = await Cliente.findByPk(id)
+            return res.status(200).json({
+                mensage: "Cliente atualizado com sucesso.",
+                cliente: clienteAtualizado
+            })
+        }
+
+        return res.status(404).json({erro: "Cliente não encontrado."})
+    } catch (error) {
+        res.status(500).json({ erro: "Erro ao atualizar cliente." })
+    }
+})
+
+app.delete("/clientes/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+        
+        const deletado = await Cliente.destroy({
+            where: { id: id }
+        })
+
+        if (deletado) {
+            return res.status(200).json({ message: "Cliente removido com sucesso." })
+        }
+
+        return res.status(404).json({ message: "Cliente não encontrado." })
+    } catch (error) {
+        return res.status(500).json({ message: "Erro ao excluir cliente." })
+    }
+})
+
 // Iniciando o servidor.
 sequelize.sync().then(() => {
     app.listen(port, () => {
