@@ -1,6 +1,7 @@
+require('dotenv').config(); // Carrega o .env antes de tudo
+
 const app = require('./app');
-const sequelize = require('./src/config/db');
-require('dotenv').config();
+const sequelize = require('./config/db');
 
 const PORT = process.env.PORT || 3001;
 
