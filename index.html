@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atividade em Equipe — Documentação do Sistema</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #F0F2F5; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    button:hover { opacity: 0.92; transform: translateY(-1px); }
+    @media print {
+      body { background: #fff; }
+      .no-print { display: none !important; }
+      .page-break { page-break-before: always; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const C = {
+      dark: "#2E4059",
+      darkH: "#3A5575",
+      accent: "#3B82F6",
+      green: "#059669",
+      greenBg: "#ECFDF5",
+      red: "#DC2626",
+      yellow: "#D97706",
+      yellowBg: "#FEF3C7",
+      white: "#FFFFFF",
+      g100: "#F8FAFC",
+      g200: "#E2E8F0",
+      g400: "#94A3B8",
+      g600: "#475569",
+      g800: "#1E293B",
+      purple: "#7C3AED",
+      purpleBg: "#F5F3FF",
+      cyan: "#0891B2",
+      cyanBg: "#ECFEFF",
+      orange: "#EA580C"
+    };
+
+    const TABS = [
+      "Visão Geral",
+      "O que a equipe deve fazer",
+      "Métodos de implantação",
+      "Treinamento de usuários",
+      "Entregáveis"
+    ];
+
+    function SectionCard({ icon, title, children, color = C.accent }) {
+      return (
+        <div style={{
+          background: C.g100,
+          borderRadius: 14,
+          padding: 18,
+          borderLeft: `4px solid ${color}`,
+          marginBottom: 12
+        }}>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 8 }}>
+            <span style={{ fontSize: 22 }}>{icon}</span>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: C.g800 }}>{title}</h3>
+          </div>
+          <div style={{ fontSize: 13, color: C.g600, lineHeight: 1.75 }}>{children}</div>
+        </div>
+      );
+    }
+
+    function BulletList({ items }) {
+      return (
+        <ul style={{ paddingLeft: 20, marginTop: 8 }}>
+          {items.map((item, index) => (
+            <li key={index} style={{ marginBottom: 6 }}>{item}</li>
+          ))}
+        </ul>
+      );
+    }
+
+    function MethodCard({ title, desc, color }) {
+      return (
+        <div style={{
+          background: C.white,
+          border: `1px solid ${C.g200}`,
+          borderTop: `4px solid ${color}`,
+          borderRadius: 12,
+          padding: 14,
+          minHeight: 140
+        }}>
+          <h4 style={{ fontSize: 14, fontWeight: 700, color: C.g800, marginBottom: 8 }}>{title}</h4>
+          <p style={{ fontSize: 12, color: C.g600, lineHeight: 1.65 }}>{desc}</p>
+        </div>
+      );
+    }
+
+    function App() {
+      const [tab, setTab] = useState(0);
+
+      return (
+        <div style={{ background: "#F0F2F5", minHeight: "100vh", padding: 16, maxWidth: 980, margin: "0 auto" }}>
+          <div style={{
+            background: `linear-gradient(135deg, ${C.dark}, ${C.darkH})`,
+            borderRadius: 18,
+            padding: "30px 32px",
+            marginBottom: 14,
+            color: C.white,
+            textAlign: "center"
+          }}>
+            <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 3, opacity: 0.65, marginBottom: 6 }}>
+              Disciplina de Manutenção de Sistemas
+            </p>
+            <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>
+              🧩 Atividade em Equipe — Documentação do Sistema
+            </h1>
+            <p style={{ fontSize: 15, opacity: 0.88, maxWidth: 760, margin: "0 auto" }}>
+              Elaboração de uma documentação básica do sistema, escolha do método de implantação e preparação do treinamento de usuários.
+            </p>
+            <p style={{ fontSize: 12, opacity: 0.6, marginTop: 10 }}>
+              Material organizado para iniciantes, com foco em clareza, implantação e apresentação do sistema funcional.
+            </p>
+          </div>
+
+          <div className="no-print" style={{
+            display: "flex",
+            gap: 4,
+            marginBottom: 14,
+            background: C.white,
+            borderRadius: 12,
+            padding: 4,
+            boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+            overflowX: "auto"
+          }}>
+            {TABS.map((item, index) => (
+              <button
+                key={index}
+                onClick={() => setTab(index)}
+                style={{
+                  flex: 1,
+                  padding: "10px 8px",
+                  border: "none",
+                  borderRadius: 10,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  background: tab === index ? C.dark : "transparent",
+                  color: tab === index ? C.white : C.g600,
+                  transition: "all 0.2s",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+
+          <div style={{
+            background: C.white,
+            borderRadius: 18,
+            padding: 24,
+            boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+            animation: "fadeIn 0.3s"
+          }} key={tab}>
+
+            {tab === 0 && (
+              <div>
+                <h2 style={{ fontSize: 22, color: C.g800, marginBottom: 14 }}>📋 Visão Geral da Atividade</h2>
+
+                <SectionCard icon="🎯" title="Enunciado" color={C.accent}>
+                  <p>
+                    Nesta atividade, a equipe deverá elaborar uma <strong>documentação básica e objetiva</strong> do sistema desenvolvido na disciplina,
+                    com foco no que é essencial para um grupo iniciante conseguir entender o sistema, registrar como ele funciona,
+                    descrever como ele deve ser implantado e preparar um treinamento simples para os usuários.
+                  </p>
+                  <p style={{ marginTop: 8 }}>
+                    Além da documentação, a equipe deverá apresentar o <strong>sistema em funcionamento</strong> e explicar como seria realizado o treinamento dos usuários.
+                  </p>
+                </SectionCard>
+
+                <SectionCard icon="✅" title="Objetivo da atividade" color={C.green}>
+                  <p>Documentar de forma clara e simples:</p>
+                  <BulletList
+                    items={[
+                      "o sistema desenvolvido pela equipe;",
+                      "o método de implantação escolhido;",
+                      "o passo a passo básico de implantação;",
+                      "o treinamento dos usuários."
+                    ]}
+                  />
+                </SectionCard>
+
+                <SectionCard icon="👥" title="Como a atividade deve ser realizada" color={C.purple}>
+                  <BulletList
+                    items={[
+                      "A atividade deve ser feita em equipe.",
+                      "O texto deve ser claro, organizado e adequado para iniciantes.",
+                      "A documentação pode conter imagens, prints e exemplos para facilitar a compreensão.",
+                      "Na apresentação, a equipe deverá mostrar o sistema funcional."
+                    ]}
+                  />
+                </SectionCard>
+              </div>
+            )}
+
+            {tab === 1 && (
+              <div>
+                <h2 style={{ fontSize: 22, color: C.g800, marginBottom: 14 }}>🛠️ O que a equipe deve fazer</h2>
+
+                <SectionCard icon="1️⃣" title="Descrição do sistema" color={C.accent}>
+                  <p>Apresentar, de forma simples:</p>
+                  <BulletList
+                    items={[
+                      "nome do sistema;",
+                      "finalidade do sistema;",
+                      "público que irá utilizar;",
+                      "principais funcionalidades."
+                    ]}
+                  />
+                </SectionCard>
+
+                <SectionCard icon="2️⃣" title="Requisitos básicos para funcionamento" color={C.green}>
+                  <p>Informar o que é necessário para executar o sistema, por exemplo:</p>
+                  <BulletList
+                    items={[
+                      "sistema operacional;",
+                      "linguagem ou plataforma utilizada;",
+                      "banco de dados, se houver;",
+                      "programas, serviços ou ferramentas necessários;",
+                      "requisitos mínimos de máquina ou ambiente."
+                    ]}
+                  />
+                </SectionCard>
+
+                <SectionCard icon="3️⃣" title="Passo a passo básico da implantação" color={C.orange}>
+                  <p>Descrever como o sistema pode ser implantado, incluindo:</p>
+                  <BulletList
+                    items={[
+                      "preparação do ambiente;",
+                      "instalação do sistema;",
+                      "configuração inicial;",
+                      "criação ou conexão com banco de dados, se houver;",
+                      "testes básicos para verificar se está funcionando."
+                    ]}
+                  />
+                </SectionCard>
+              </div>
+            )}
+
+            {tab === 2 && (
+              <div>
+                <h2 style={{ fontSize: 22, color: C.g800, marginBottom: 14 }}>🚀 Métodos de implantação</h2>
+
+                <SectionCard icon="📚" title="O que deve constar na atividade" color={C.cyan}>
+                  <p>
+                    A equipe deverá <strong>pesquisar, citar e explicar</strong> os principais métodos de implantação de sistemas.
+                    Depois, deverá indicar <strong>qual método escolheria</strong> para o sistema desenvolvido e justificar essa escolha de forma simples.
+                  </p>
+                </SectionCard>
+
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 12, marginBottom: 14 }}>
+                  <MethodCard
+                    title="Implantação direta"
+                    desc="O sistema antigo é substituído de uma vez pelo novo sistema. É um método mais rápido, mas exige mais cuidado, pois a mudança acontece de forma imediata."
+                    color={C.red}
+                  />
+                  <MethodCard
+                    title="Implantação paralela"
+                    desc="O sistema antigo e o novo funcionam ao mesmo tempo por um período. Isso reduz riscos, pois é possível comparar os resultados antes da troca definitiva."
+                    color={C.green}
+                  />
+                  <MethodCard
+                    title="Implantação piloto"
+                    desc="O novo sistema é implantado primeiro em um pequeno grupo, setor ou unidade. Após os testes iniciais, ele pode ser expandido para os demais usuários."
+                    color={C.purple}
+                  />
+                  <MethodCard
+                    title="Implantação gradual"
+                    desc="O sistema é implantado aos poucos, por etapas, módulos ou setores. Esse método facilita o controle das mudanças e a adaptação dos usuários."
+                    color={C.yellow}
+                  />
+                </div>
+
+                <SectionCard icon="✍️" title="Escolha do método pela equipe" color={C.accent}>
+                  <p>A equipe deverá registrar:</p>
+                  <BulletList
+                    items={[
+                      "qual método de implantação escolheria para o seu sistema;",
+                      "por que esse método foi considerado o mais adequado;",
+                      "quais vantagens esse método oferece para o projeto."
+                    ]}
+                  />
+                </SectionCard>
+              </div>
+            )}
+
+            {tab === 3 && (
+              <div>
+                <h2 style={{ fontSize: 22, color: C.g800, marginBottom: 14 }}>🎓 Treinamento de usuários</h2>
+
+                <SectionCard icon="👤" title="O que deve ser explicado" color={C.green}>
+                  <p>A equipe deverá explicar como treinaria os usuários para utilizar o sistema. O material deve conter:</p>
+                  <BulletList
+                    items={[
+                      "quem serão os usuários;",
+                      "objetivo do treinamento;",
+                      "conteúdos que seriam ensinados;",
+                      "forma do treinamento;",
+                      "recursos utilizados."
+                    ]}
+                  />
+                </SectionCard>
+
+                <SectionCard icon="🧰" title="Exemplos de recursos" color={C.orange}>
+                  <BulletList
+                    items={[
+                      "slides;",
+                      "manual simples;",
+                      "demonstração prática;",
+                      "roteiro passo a passo;",
+                      "vídeo ou guia ilustrado."
+                    ]}
+                  />
+                </SectionCard>
+
+                <SectionCard icon="📄" title="Documento de treinamento" color={C.purple}>
+                  <p>
+                    A equipe deverá produzir uma <strong>documentação de treinamento em PDF</strong> com linguagem simples, contendo:
+                  </p>
+                  <BulletList
+                    items={[
+                      "apresentação do sistema;",
+                      "como acessar;",
+                      "como usar as funções principais;",
+                      "cuidados básicos;",
+                      "dúvidas frequentes ou erros comuns."
+                    ]}
+                  />
+                </SectionCard>
+              </div>
+            )}
+
+            {tab === 4 && (
+              <div>
+                <h2 style={{ fontSize: 22, color: C.g800, marginBottom: 14 }}>📦 Entregáveis</h2>
+
+                <SectionCard icon="📘" title="1. PDF" color={C.accent}>
+                  <p>Um <strong>arquivo em PDF</strong> contendo:</p>
+                  <BulletList
+                    items={[
+                      "descrição do sistema;",
+                      "requisitos básicos;",
+                      "métodos de implantação;",
+                      "método escolhido pela equipe;",
+                      "passo a passo da implantação;",
+                      "documentação de treinamento dos usuários."
+                    ]}
+                  />
+                </SectionCard>
+
+                <SectionCard icon="🗣️" title="2. Apresentação em equipe" color={C.green}>
+                  <p>
+                    A equipe deverá realizar uma <strong>apresentação em equipe</strong>, com participação dos integrantes, mostrando:
+                  </p>
+                  <BulletList
+                    items={[
+                      "o sistema funcional;",
+                      "a explicação do método de implantação escolhido;",
+                      "a proposta de treinamento dos usuários."
+                    ]}
+                  />
+                </SectionCard>
+
+                <SectionCard icon="🧱" title="Estrutura sugerida do PDF" color={C.cyan}>
+                  <ol style={{ paddingLeft: 20, marginTop: 8 }}>
+                    {[
+                      "Capa",
+                      "Introdução do sistema",
+                      "Descrição do sistema",
+                      "Requisitos básicos",
+                      "Métodos de implantação de sistemas",
+                      "Método escolhido pela equipe",
+                      "Passo a passo da implantação",
+                      "Treinamento de usuários",
+                      "Documento de treinamento",
+                      "Conclusão"
+                    ].map((item, index) => (
+                      <li key={index} style={{ marginBottom: 6 }}>{item}</li>
+                    ))}
+                  </ol>
+                </SectionCard>
+
+                <div style={{
+                  background: C.yellowBg,
+                  borderRadius: 12,
+                  padding: 14,
+                  marginTop: 14,
+                  border: "1px solid #FCD34D"
+                }}>
+                  <p style={{ fontSize: 14, color: "#92400E", fontWeight: 700, marginBottom: 4 }}>✅ Resultado esperado</p>
+                  <p style={{ fontSize: 13, color: "#92400E", lineHeight: 1.7 }}>
+                    Ao final da atividade, a equipe deverá demonstrar que consegue explicar o sistema desenvolvido,
+                    registrar de forma simples como ele pode ser implantado, escolher um método de implantação adequado
+                    e orientar usuários para utilizar o sistema corretamente.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="no-print" style={{ textAlign: "center", padding: "16px 0", fontSize: 11, color: C.g400 }}>
+            Atividade em Equipe — Documentação Básica do Sistema e Método de Implantação
+            <br />
+            <button
+              onClick={() => window.print()}
+              style={{
+                marginTop: 8,
+                padding: "6px 14px",
+                border: `1px solid ${C.g200}`,
+                borderRadius: 6,
+                fontSize: 11,
+                cursor: "pointer",
+                background: C.white,
+                color: C.g600,
+                fontFamily: "inherit"
+              }}
+            >
+              🖨️ Imprimir / Salvar em PDF
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
