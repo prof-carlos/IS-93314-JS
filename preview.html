@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atividade em Equipe — Documentação do Sistema</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #F0F2F5; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    button:hover { opacity: 0.94; transform: translateY(-1px); }
+    @media print {
+      body { background: #fff; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const C = {
+      dark: "#2E4059",
+      darkH: "#3A5575",
+      accent: "#2563EB",
+      green: "#059669",
+      orange: "#EA580C",
+      purple: "#7C3AED",
+      red: "#DC2626",
+      white: "#FFFFFF",
+      g100: "#F8FAFC",
+      g200: "#E2E8F0",
+      g400: "#94A3B8",
+      g600: "#475569",
+      g800: "#1E293B",
+      yellowBg: "#FEF3C7"
+    };
+
+    const TABS = [
+      "Orientações",
+      "Implantação",
+      "Treinamento de usuários",
+      "Enviar"
+    ];
+
+    function Card({ icon, title, color = C.accent, children }) {
+      return (
+        <div style={{
+          background: C.g100,
+          borderRadius: 14,
+          padding: 18,
+          borderLeft: `4px solid ${color}`,
+          marginBottom: 12
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+            <span style={{ fontSize: 22 }}>{icon}</span>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: C.g800 }}>{title}</h3>
+          </div>
+          <div style={{ fontSize: 13, lineHeight: 1.75, color: C.g600 }}>{children}</div>
+        </div>
+      );
+    }
+
+    function BulletList({ items }) {
+      return (
+        <ul style={{ paddingLeft: 20, marginTop: 8 }}>
+          {items.map((item, index) => (
+            <li key={index} style={{ marginBottom: 6 }}>{item}</li>
+          ))}
+        </ul>
+      );
+    }
+
+    function App() {
+      const [tab, setTab] = useState(0);
+
+      return (
+        <div style={{ maxWidth: 980, margin: "0 auto", padding: 16, minHeight: "100vh" }}>
+          <div style={{
+            background: `linear-gradient(135deg, ${C.dark}, ${C.darkH})`,
+            borderRadius: 18,
+            padding: "30px 32px",
+            marginBottom: 14,
+            color: C.white,
+            textAlign: "center"
+          }}>
+            <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 3, opacity: 0.65, marginBottom: 6 }}>
+              Disciplina de Manutenção de Sistemas
+            </p>
+            <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 6 }}>
+              🧩 Atividade em Equipe — Documentação do Sistema
+            </h1>
+            <p style={{ fontSize: 15, opacity: 0.88, maxWidth: 760, margin: "0 auto" }}>
+              Documentação objetiva do sistema desenvolvido, apresentação do sistema funcional e explicação do treinamento dos usuários.
+            </p>
+          </div>
+
+          <div className="no-print" style={{
+            display: "flex",
+            gap: 4,
+            marginBottom: 14,
+            background: C.white,
+            borderRadius: 12,
+            padding: 4,
+            boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+            overflowX: "auto"
+          }}>
+            {TABS.map((item, index) => (
+              <button
+                key={index}
+                onClick={() => setTab(index)}
+                style={{
+                  flex: 1,
+                  padding: "10px 8px",
+                  border: "none",
+                  borderRadius: 10,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  background: tab === index ? C.dark : "transparent",
+                  color: tab === index ? C.white : C.g600,
+                  transition: "all 0.2s",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+
+          <div style={{
+            background: C.white,
+            borderRadius: 18,
+            padding: 24,
+            boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+            animation: "fadeIn 0.3s"
+          }} key={tab}>
+
+            {tab === 0 && (
+              <div>
+                <h2 style={{ fontSize: 22, color: C.g800, marginBottom: 14 }}>📋 Orientações</h2>
+
+                <Card icon="📝" title="O que deve ser feito" color={C.accent}>
+                  <p>
+                    Nesta atividade, a equipe deverá elaborar uma <strong>documentação objetiva</strong> do sistema desenvolvido na disciplina de manutenção de sistemas.
+                  </p>
+                  <p style={{ marginTop: 8 }}>
+                    Além da documentação, a equipe deverá apresentar o <strong>sistema em funcionamento</strong> e explicar como seria realizado o <strong>treinamento dos usuários</strong>.
+                  </p>
+                </Card>
+
+                <Card icon="🎯" title="Foco da atividade" color={C.green}>
+                  <BulletList
+                    items={[
+                      "documentar o sistema desenvolvido;",
+                      "registrar como será feita a implantação;",
+                      "explicar como os usuários serão treinados;",
+                      "apresentar a aplicação funcional em equipe."
+                    ]}
+                  />
+                </Card>
+
+                <div style={{
+                  background: C.yellowBg,
+                  borderRadius: 12,
+                  padding: 14,
+                  border: "1px solid #FCD34D",
+                  marginTop: 12
+                }}>
+                  <p style={{ fontSize: 14, color: "#92400E", fontWeight: 700, marginBottom: 4 }}>✅ Atenção</p>
+                  <p style={{ fontSize: 13, color: "#92400E", lineHeight: 1.7 }}>
+                    O conteúdo deve ser claro, direto e sem excesso de informações repetidas. A equipe deve demonstrar domínio básico do sistema, da implantação e do treinamento.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {tab === 1 && (
+              <div>
+                <h2 style={{ fontSize: 22, color: C.g800, marginBottom: 14 }}>🚀 Implantação</h2>
+
+                <Card icon="🌐" title="Deploy da aplicação" color={C.orange}>
+                  <p>
+                    O <strong>deploy da aplicação deve estar em servidores web</strong>, permitindo que o sistema seja acessado e demonstrado durante a apresentação.
+                  </p>
+                </Card>
+
+                <Card icon="📄" title="O que deve constar na documentação" color={C.accent}>
+                  <BulletList
+                    items={[
+                      "método de implantação escolhido pela equipe;",
+                      "justificativa da escolha do método;",
+                      "etapas básicas de implantação do sistema;",
+                      "informação sobre onde a aplicação foi publicada."
+                    ]}
+                  />
+                </Card>
+
+                <Card icon="📚" title="Métodos de implantação que podem ser citados" color={C.purple}>
+                  <BulletList
+                    items={[
+                      "implantação direta;",
+                      "implantação paralela;",
+                      "implantação piloto;",
+                      "implantação gradual."
+                    ]}
+                  />
+                </Card>
+              </div>
+            )}
+
+            {tab === 2 && (
+              <div>
+                <h2 style={{ fontSize: 22, color: C.g800, marginBottom: 14 }}>🎓 Treinamento de usuários</h2>
+
+                <Card icon="👥" title="Apresentação da equipe" color={C.green}>
+                  <p>
+                    <strong>Todos os componentes da equipe devem apresentar</strong> a atividade.
+                  </p>
+                </Card>
+
+                <Card icon="⚙️" title="Sistema em funcionamento" color={C.accent}>
+                  <p>
+                    A <strong>aplicação deve estar funcional</strong> no momento da apresentação, para que a equipe demonstre o uso do sistema e a proposta de treinamento dos usuários.
+                  </p>
+                </Card>
+
+                <Card icon="📘" title="Documentação de treinamento" color={C.orange}>
+                  <p>A documentação deve explicar de forma simples:</p>
+                  <BulletList
+                    items={[
+                      "quem serão os usuários do sistema;",
+                      "como será feito o treinamento;",
+                      "quais funções principais serão ensinadas;",
+                      "quais materiais poderão ser usados no treinamento."
+                    ]}
+                  />
+                </Card>
+              </div>
+            )}
+
+            {tab === 3 && (
+              <div>
+                <h2 style={{ fontSize: 22, color: C.g800, marginBottom: 14 }}>📦 Enviar</h2>
+
+                <Card icon="🔗" title="Link do repositório" color={C.accent}>
+                  <p>
+                    Enviar o <strong>link do repositório no GitHub</strong> com o código-fonte do sistema.
+                  </p>
+                </Card>
+
+                <Card icon="📄" title="Documentação em PDF" color={C.red}>
+                  <p>
+                    Enviar a <strong>documentação de treinamento dos usuários e implantação em PDF</strong>.
+                  </p>
+                </Card>
+
+                <Card icon="✅" title="Entregáveis finais" color={C.green}>
+                  <BulletList
+                    items={[
+                      "link do GitHub com o código-fonte;",
+                      "PDF com a documentação de implantação;",
+                      "PDF com a documentação de treinamento dos usuários;",
+                      "apresentação em equipe com o sistema funcional."
+                    ]}
+                  />
+                </Card>
+              </div>
+            )}
+          </div>
+
+          <div className="no-print" style={{ textAlign: "center", padding: "16px 0", fontSize: 11, color: C.g400 }}>
+            Atividade em Equipe — Documentação do Sistema
+            <br />
+            <button
+              onClick={() => window.print()}
+              style={{
+                marginTop: 8,
+                padding: "6px 14px",
+                border: `1px solid ${C.g200}`,
+                borderRadius: 6,
+                fontSize: 11,
+                cursor: "pointer",
+                background: C.white,
+                color: C.g600,
+                fontFamily: "inherit"
+              }}
+            >
+              🖨️ Imprimir / Salvar em PDF
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
